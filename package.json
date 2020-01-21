@@ -1,0 +1,32 @@
+{
+  "name": "responsive-image-sizes",
+  "version": "1.0.0",
+  "description": "Retrieve the correct sizes for a responsive image based on its intrinsic width and its width on screen",
+  "main": "index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "keywords": [
+    "responsive",
+    "images"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/HCESrl/responsive-image-sizes"
+  },
+  "author": "Paolo Mioni",
+  "license": "MIT",
+  "devDependencies": {
+    "husky": "^4.0.10",
+    "prettier": "^1.19.1",
+    "pretty-quick": "^2.0.1",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "pretty-quick --staged"
+    }
+  },
+  "dependencies": {}
+}
