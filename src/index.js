@@ -7,6 +7,8 @@ let responsiveImageSizes = {
    */
   baseSizes: {
     desktop: [
+      2880,
+      2560,
       1920,
       1600, // same as tablet portrait first
       1440,
@@ -18,7 +20,7 @@ let responsiveImageSizes = {
       1024,
       768
     ],
-    smartphone: [818, 768, 640]
+    smartphone: [1242, 828, 768, 640]
   },
 
   /**
@@ -26,6 +28,7 @@ let responsiveImageSizes = {
    */
   granularBaseSizes: {
     desktop: [
+      2880,
       2560, //2K iMac
       2048, // iPad Landscape
       1920,
@@ -41,7 +44,13 @@ let responsiveImageSizes = {
       1024,
       768
     ],
-    smartphone: [818, 750, 720, 640]
+    smartphone: [
+      1242,
+      828,
+      750,
+      720,
+      640
+    ]
   },
 
   /**
@@ -53,24 +62,26 @@ let responsiveImageSizes = {
    * @param deviceType           whether to generate sizes for desktop, tabletPortrait, smartphone or all
    * @param topSize              the highest resolution to generate (fullHD is default, but if you need to go above that provide pixels)
    * @param mode                 granular,  standard, or custom the first has more precise resolutions and creates more images
-   * @param customSizes                 an object with desktop, tabletPortrait, smartphone custom sizes
+   * @param customSizes          an object with desktop, tabletPortrait, smartphone custom sizes
    */
   getResponsiveSizes: function({
-    sourceImageWidth = 1920,
-    widthOnPage = 100,
-    deviceType = "all",
-    topSize = 1920,
-    mode = "standard",
-    customSizes = {}
-  } = {}) {
+                                 sourceImageWidth = 1920,
+                                 widthOnPage = 100,
+                                 deviceType = "all",
+                                 topSize = 1920,
+                                 mode = "standard",
+                                 customSizes = {}
+                               } = {}) {
+
     let baseSizes = this.collectSizes(deviceType, mode, customSizes);
-    // check top image size, not to upsample image
+
+    // check that we're not producing images bigger than the maximum desired width
     baseSizes = this.checkTopSize(baseSizes, topSize);
 
     // get list of sizes based on width on page
     baseSizes = this.buildSizeList(baseSizes, widthOnPage);
 
-    // check that we're not producing images that are bigger than the source image
+    // check that we're not producing images that are bigger than the source image, to avoid unnecessary upsampling
     baseSizes = this.checkMaxImageSize(baseSizes, sourceImageWidth);
 
     return baseSizes;
@@ -88,7 +99,7 @@ let responsiveImageSizes = {
   },
 
   /**
-   * Make sure we do not build images that are wider than the top size
+   * Make sure we do not build images that are wider than the top required size
    *
    * @param baseSizes
    * @param topSize
@@ -114,6 +125,7 @@ let responsiveImageSizes = {
    * @param mode
    */
   collectSizes: function(deviceType, mode, customSizes) {
+
     let baseSizes;
     switch (mode) {
       case "granular":
@@ -140,6 +152,15 @@ let responsiveImageSizes = {
           return a > b ? -1 : 1;
         });
         break;
+      case "mobile": // tablet portrait and smartphone
+        res = Array.from(
+          new Set(
+            baseSizes.smartphone.concat(baseSizes.tabletPortrait)
+          )
+        ).sort((a, b) => {
+          return a > b ? -1 : 1;
+        });
+        break;
       default:
         res = baseSizes[deviceType];
         break;
@@ -148,4 +169,4 @@ let responsiveImageSizes = {
   }
 };
 
-module.exports = responsiveImageSizes.getResponsiveSizes;
+module.exports =  responsiveImageSizes;
