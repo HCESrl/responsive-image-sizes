@@ -1,6 +1,6 @@
 {
   "name": "responsive-image-sizes",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Retrieve the correct sizes for a responsive image based on its intrinsic width and its width on screen",
   "main": "src/index.js",
   "scripts": {

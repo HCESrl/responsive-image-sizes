@@ -29,7 +29,7 @@ With **NPM**
 ##Including the library
 
 ```
-const responsiveImageSizes = require('./index');
+const responsiveImageSizes = require('responsive-image-sizes');
 
 ```
 ##Using the library
